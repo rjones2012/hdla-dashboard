@@ -33,24 +33,24 @@ function Expander({ title, count, children, defaultOpen = false }) {
 
 function ClientCard({ client }) {
   return (
-    <div className="bg-white border-2 border-gray-300 rounded-lg p-4 min-w-[220px] shadow-sm">
-      <div className="font-bold text-lg text-hdla-text mb-1">{client.Client}</div>
-      <div className="text-sm text-hdla-muted mb-3">{client.Market} • {client.Partner || 'Unassigned'}</div>
+    <div className="bg-white border-2 border-gray-400 rounded-lg p-5 min-w-[240px] shadow-md hover:shadow-lg transition-shadow">
+      <div className="font-black text-xl text-hdla-text mb-1">{client.Client}</div>
+      <div className="text-sm font-medium text-hdla-muted mb-4">{client.Market} • {client.Partner || 'Unassigned'}</div>
       
-      <div className="flex gap-4 text-sm mb-3">
-        <span><span className="font-bold">Active</span> {client.activeProjects}</span>
-        <span><span className="font-bold">Proposals</span> {client.proposalCount}</span>
+      <div className="flex gap-6 text-sm mb-4">
+        <span><span className="font-black">Active</span> {client.activeProjects}</span>
+        <span><span className="font-black">Proposals</span> {client.proposalCount}</span>
       </div>
       
       <div className="text-sm space-y-1">
-        <div><span className="font-bold">Traction</span> {client.traction}</div>
-        <div><span className="font-bold">Relationship</span> {client.relationship}</div>
-        <div><span className="font-bold">Touchpoint</span> {client.touchpoint}</div>
+        <div><span className="font-black">Traction</span> {client.traction}</div>
+        <div><span className="font-black">Relationship</span> {client.relationship}</div>
+        <div><span className="font-black">Touchpoint</span> {client.touchpoint}</div>
       </div>
       
       {client.flags && client.flags.length > 0 && (
-        <div className="mt-3 text-sm">
-          <span className="font-bold">Why:</span> {client.flags.join(', ')}
+        <div className="mt-4 pt-3 border-t border-gray-200 text-sm">
+          <span className="font-black text-hdla-magenta">Why:</span> {client.flags.join(', ')}
         </div>
       )}
     </div>

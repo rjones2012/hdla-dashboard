@@ -8,14 +8,14 @@ export function Card({ children, className = '' }) {
 
 export function MetricCard({ label, value, subvalue, trend, className = '' }) {
   return (
-    <Card className={`py-3 ${className}`}>
-      <div className="text-xs text-hdla-muted uppercase tracking-wide">{label}</div>
-      <div className="text-4xl font-bold text-hdla-text leading-tight">{value}</div>
+    <Card className={`py-4 ${className}`}>
+      <div className="text-sm font-bold text-hdla-muted uppercase tracking-wide">{label}</div>
+      <div className="text-5xl font-black text-hdla-text leading-tight">{value}</div>
       {subvalue && (
-        <div className="text-sm text-hdla-muted">{subvalue}</div>
+        <div className="text-sm font-medium text-hdla-muted">{subvalue}</div>
       )}
       {trend && (
-        <div className={`text-sm ${trend > 0 ? 'text-status-healthy' : 'text-status-hire'}`}>
+        <div className={`text-sm font-bold ${trend > 0 ? 'text-status-healthy' : 'text-status-hire'}`}>
           {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}%
         </div>
       )}

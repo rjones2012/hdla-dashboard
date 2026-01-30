@@ -70,9 +70,9 @@ export function Sidebar() {
 
 export function PageHeader({ title, subtitle }) {
   return (
-    <div className="mb-6">
-      <h1 className="font-flecha text-2xl font-semibold text-hdla-text">{title}</h1>
-      {subtitle && <p className="text-sm text-hdla-muted mt-1">{subtitle}</p>}
+    <div className="mb-8">
+      <h1 className="font-flecha text-4xl font-black text-hdla-text tracking-tight">{title}</h1>
+      {subtitle && <p className="text-base text-hdla-muted mt-2">{subtitle}</p>}
     </div>
   );
 }
