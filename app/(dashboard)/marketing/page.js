@@ -340,7 +340,7 @@ export default function MarketingPage() {
       <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         🏆 Recent Wins
       </h2>
-      <p className="text-base text-hdla-muted mb-4">Proposals awarded in the last 90 days.</p>
+      <p className="text-base text-hdla-muted mb-4">Proposals awarded in the last 120 days.</p>
       
       {wins.length > 0 ? (
         <Card className="mb-6">
@@ -354,7 +354,7 @@ export default function MarketingPage() {
       <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         📉 Recent Losses
       </h2>
-      <p className="text-base text-hdla-muted mb-4">Proposals not awarded in the last 90 days.</p>
+      <p className="text-base text-hdla-muted mb-4">Proposals not awarded in the last 120 days.</p>
       
       {losses.length > 0 ? (
         <Card className="mb-6">
