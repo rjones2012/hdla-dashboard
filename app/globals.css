@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Flecha M font - will be loaded if available */
+@font-face {
+  font-family: 'Flecha M';
+  src: local('Flecha M');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Flecha M';
+  src: local('Flecha M Medium');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Flecha M';
+  src: local('Flecha M Bold');
+  font-weight: 700;
+}
+
+body {
+  background-color: #fbfbfa;
+  color: #111111;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
