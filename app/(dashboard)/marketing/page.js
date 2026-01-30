@@ -33,24 +33,24 @@ function Expander({ title, count, children, defaultOpen = false }) {
 
 function ClientCard({ client }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 min-w-[200px]">
-      <div className="font-semibold text-hdla-text mb-1">{client.Client}</div>
-      <div className="text-xs text-hdla-muted mb-2">{client.Market} • {client.Partner || 'Unassigned'}</div>
+    <div className="bg-white border-2 border-gray-300 rounded-lg p-4 min-w-[220px] shadow-sm">
+      <div className="font-bold text-lg text-hdla-text mb-1">{client.Client}</div>
+      <div className="text-sm text-hdla-muted mb-3">{client.Market} • {client.Partner || 'Unassigned'}</div>
       
-      <div className="flex gap-4 text-xs mb-2">
-        <span><strong>Active</strong> {client.activeProjects}</span>
-        <span><strong>Proposals</strong> {client.proposalCount}</span>
+      <div className="flex gap-4 text-sm mb-3">
+        <span><span className="font-bold">Active</span> {client.activeProjects}</span>
+        <span><span className="font-bold">Proposals</span> {client.proposalCount}</span>
       </div>
       
-      <div className="text-xs space-y-1">
-        <div><strong>Traction</strong> {client.traction}</div>
-        <div><strong>Relationship</strong> {client.relationship}</div>
-        <div><strong>Touchpoint</strong> {client.touchpoint}</div>
+      <div className="text-sm space-y-1">
+        <div><span className="font-bold">Traction</span> {client.traction}</div>
+        <div><span className="font-bold">Relationship</span> {client.relationship}</div>
+        <div><span className="font-bold">Touchpoint</span> {client.touchpoint}</div>
       </div>
       
       {client.flags && client.flags.length > 0 && (
-        <div className="mt-2 text-xs">
-          <strong>Why:</strong> {client.flags.join(', ')}
+        <div className="mt-3 text-sm">
+          <span className="font-bold">Why:</span> {client.flags.join(', ')}
         </div>
       )}
     </div>
@@ -124,8 +124,11 @@ export default function MarketingPage() {
     c.relationship >= 7 && c.touchpoint >= 5 && c.activeProjects > 0
   ).sort((a, b) => b.traction - a.traction);
   
-  // Strategic targets (flagged as strategic)
-  const strategic = allClients.filter(c => c.Strategic === true || c.Strategic === 'TRUE' || c.Strategic === 1);
+  // Strategic targets (flagged as strategic - column may have trailing space)
+  const strategic = allClients.filter(c => {
+    const val = c.Strategic || c['Strategic '] || '';
+    return val === 'Yes' || val === 'yes' || val === true || val === 'TRUE' || val === 1;
+  });
   const strategicWithWork = strategic.filter(c => c.activeProjects > 0);
   const strategicProspects = strategic.filter(c => c.activeProjects === 0);
   
@@ -249,11 +252,11 @@ export default function MarketingPage() {
       </div>
 
       {/* Tier 1 Actions */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-1 flex items-center gap-2">
+      <h2 className="text-2xl font-bold text-hdla-text mb-1 flex items-center gap-2">
         🎯 Tier 1 Actions
       </h2>
-      <p className="text-sm text-hdla-muted mb-3">Your personal list. In-person visits, high-touch engagement.</p>
-      <p className="text-sm font-medium text-hdla-text mb-3">{tier1Actions.length} clients need attention</p>
+      <p className="text-sm text-hdla-muted mb-2">Your personal list. In-person visits, high-touch engagement.</p>
+      <p className="text-base font-bold text-hdla-text mb-3">{tier1Actions.length} clients need attention</p>
       
       {tier1Actions.length > 0 && (
         <>
@@ -265,11 +268,11 @@ export default function MarketingPage() {
       )}
 
       {/* Tier 2 Actions */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-1 flex items-center gap-2 mt-8">
+      <h2 className="text-2xl font-bold text-hdla-text mb-1 flex items-center gap-2 mt-8">
         📋 Tier 2 Actions
       </h2>
-      <p className="text-sm text-hdla-muted mb-3">Note + call list. Relationship building, stay top of mind.</p>
-      <p className="text-sm font-medium text-hdla-text mb-3">{tier2Actions.length} clients need attention</p>
+      <p className="text-sm text-hdla-muted mb-2">Note + call list. Relationship building, stay top of mind.</p>
+      <p className="text-base font-bold text-hdla-text mb-3">{tier2Actions.length} clients need attention</p>
       
       {tier2Actions.length > 0 && (
         <>
@@ -281,11 +284,11 @@ export default function MarketingPage() {
       )}
 
       {/* Tier 3 Actions */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-1 flex items-center gap-2 mt-8">
+      <h2 className="text-2xl font-bold text-hdla-text mb-1 flex items-center gap-2 mt-8">
         👥 Tier 3 Actions
       </h2>
-      <p className="text-sm text-hdla-muted mb-3">Delegate to principals. Foster these relationships.</p>
-      <p className="text-sm font-medium text-hdla-text mb-3">{tier3Actions.length} clients need attention</p>
+      <p className="text-sm text-hdla-muted mb-2">Delegate to principals. Foster these relationships.</p>
+      <p className="text-base font-bold text-hdla-text mb-3">{tier3Actions.length} clients need attention</p>
       
       {tier3Actions.length > 0 && (
         <Expander title="View all Tier 3 actions" count={tier3Actions.length}>
@@ -294,11 +297,11 @@ export default function MarketingPage() {
       )}
 
       {/* Protect & Build */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-1 flex items-center gap-2 mt-8">
+      <h2 className="text-2xl font-bold text-hdla-text mb-1 flex items-center gap-2 mt-8">
         💪 Protect & Build
       </h2>
-      <p className="text-sm text-hdla-muted mb-3">Healthy relationships with active work. Keep building on these wins.</p>
-      <p className="text-sm font-medium text-hdla-text mb-3">{protectBuild.length} healthy active relationships</p>
+      <p className="text-sm text-hdla-muted mb-2">Healthy relationships with active work. Keep building on these wins.</p>
+      <p className="text-base font-bold text-hdla-text mb-3">{protectBuild.length} healthy active relationships</p>
       
       {protectBuild.length > 0 && (
         <>
@@ -310,11 +313,11 @@ export default function MarketingPage() {
       )}
 
       {/* Strategic Targets */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-1 flex items-center gap-2 mt-8">
+      <h2 className="text-2xl font-bold text-hdla-text mb-1 flex items-center gap-2 mt-8">
         🎯 Strategic Targets
       </h2>
-      <p className="text-sm text-hdla-muted mb-3">Clients you've flagged for intentional growth. Your 'go for it' list.</p>
-      <p className="text-sm font-medium text-hdla-text mb-3">
+      <p className="text-sm text-hdla-muted mb-2">Clients you've flagged for intentional growth. Your 'go for it' list.</p>
+      <p className="text-base font-bold text-hdla-text mb-3">
         {strategic.length} strategic targets ({strategicWithWork.length} with active work, {strategicProspects.length} to develop)
       </p>
       
@@ -334,7 +337,7 @@ export default function MarketingPage() {
       )}
 
       {/* Recent Wins */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-1 flex items-center gap-2 mt-8">
+      <h2 className="text-2xl font-bold text-hdla-text mb-1 flex items-center gap-2 mt-8">
         🏆 Recent Wins
       </h2>
       <p className="text-sm text-hdla-muted mb-3">Proposals awarded in the last 90 days.</p>
@@ -348,7 +351,7 @@ export default function MarketingPage() {
       )}
 
       {/* Recent Losses */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-1 flex items-center gap-2 mt-8">
+      <h2 className="text-2xl font-bold text-hdla-text mb-1 flex items-center gap-2 mt-8">
         📉 Recent Losses
       </h2>
       <p className="text-sm text-hdla-muted mb-3">Proposals not awarded in the last 90 days.</p>
@@ -362,7 +365,7 @@ export default function MarketingPage() {
       )}
 
       {/* Additional Analysis */}
-      <h2 className="text-xl font-semibold text-hdla-text mb-3 mt-8">Additional Analysis</h2>
+      <h2 className="text-2xl font-bold text-hdla-text mb-3 mt-8">Additional Analysis</h2>
       
       <div className="flex gap-1 border-b border-gray-200 mb-4">
         <TabButton active={analysisTab === 'partner'} onClick={() => setAnalysisTab('partner')}>
