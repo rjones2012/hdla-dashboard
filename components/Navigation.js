@@ -71,8 +71,8 @@ export function Sidebar() {
 export function PageHeader({ title, subtitle }) {
   return (
     <div className="mb-8">
-      <h1 className="font-flecha text-4xl font-black text-hdla-text tracking-tight">{title}</h1>
-      {subtitle && <p className="text-base text-hdla-muted mt-2">{subtitle}</p>}
+      <h1 className="font-flecha text-5xl font-black text-hdla-text tracking-tight">{title}</h1>
+      {subtitle && <p className="text-lg text-hdla-muted mt-2">{subtitle}</p>}
     </div>
   );
 }

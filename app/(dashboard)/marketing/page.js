@@ -66,6 +66,29 @@ function CardRow({ clients, maxShow = 7 }) {
   );
 }
 
+function SmallCard({ client }) {
+  return (
+    <div className="bg-white border-2 border-gray-400 rounded-lg p-3 min-w-[160px] shadow-sm hover:shadow-md transition-shadow">
+      <div className="font-bold text-sm text-hdla-text mb-1 truncate">{client.Client}</div>
+      <div className="text-xs text-hdla-muted mb-2">{client.Market} • {client.Partner || '—'}</div>
+      <div className="flex gap-3 text-xs">
+        <span><span className="font-bold">A</span> {client.activeProjects}</span>
+        <span><span className="font-bold">P</span> {client.proposalCount}</span>
+        <span><span className="font-bold">T</span> {client.traction}</span>
+      </div>
+    </div>
+  );
+}
+
+function SmallCardRow({ clients, maxShow = 10 }) {
+  const shown = clients.slice(0, maxShow);
+  return (
+    <div className="flex gap-2 overflow-x-auto pb-2 mb-2">
+      {shown.map((c, i) => <SmallCard key={i} client={c} />)}
+    </div>
+  );
+}
+
 function FlagBadge({ flag }) {
   const colors = {
     'H-probability proposal': 'bg-yellow-100 text-yellow-800',
@@ -252,7 +275,7 @@ export default function MarketingPage() {
       </div>
 
       {/* Tier 1 Actions */}
-      <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2">
+      <h2 className="text-4xl font-black text-hdla-text mb-1 flex items-center gap-2">
         🎯 Tier 1 Actions
       </h2>
       <p className="text-base text-hdla-muted mb-2">Your personal list. In-person visits, high-touch engagement.</p>
@@ -268,7 +291,7 @@ export default function MarketingPage() {
       )}
 
       {/* Tier 2 Actions */}
-      <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
+      <h2 className="text-4xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         📋 Tier 2 Actions
       </h2>
       <p className="text-base text-hdla-muted mb-2">Note + call list. Relationship building, stay top of mind.</p>
@@ -284,7 +307,7 @@ export default function MarketingPage() {
       )}
 
       {/* Tier 3 Actions */}
-      <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
+      <h2 className="text-4xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         👥 Tier 3 Actions
       </h2>
       <p className="text-base text-hdla-muted mb-2">Delegate to principals. Foster these relationships.</p>
@@ -297,7 +320,7 @@ export default function MarketingPage() {
       )}
 
       {/* Protect & Build */}
-      <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
+      <h2 className="text-4xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         💪 Protect & Build
       </h2>
       <p className="text-base text-hdla-muted mb-2">Healthy relationships with active work. Keep building on these wins.</p>
@@ -313,7 +336,7 @@ export default function MarketingPage() {
       )}
 
       {/* Strategic Targets */}
-      <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
+      <h2 className="text-4xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         🎯 Strategic Targets
       </h2>
       <p className="text-base text-hdla-muted mb-2">Clients you've flagged for intentional growth. Your 'go for it' list.</p>
@@ -323,21 +346,26 @@ export default function MarketingPage() {
       
       {strategicWithWork.length > 0 && (
         <>
-          <CardRow clients={strategicWithWork} />
-          <Expander title="Strategic with Active Work - Expand these" count={strategicWithWork.length}>
+          <p className="text-base font-bold text-hdla-text mb-2">With Active Work — Expand These</p>
+          <SmallCardRow clients={strategicWithWork} />
+          <Expander title="View all with active work" count={strategicWithWork.length}>
             <Table columns={actionColumns} data={strategicWithWork} />
           </Expander>
         </>
       )}
       
       {strategicProspects.length > 0 && (
-        <Expander title="Strategic Prospects - Break into these" count={strategicProspects.length}>
-          <Table columns={actionColumns} data={strategicProspects} />
-        </Expander>
+        <>
+          <p className="text-base font-bold text-hdla-text mb-2 mt-6">Prospects — Break Into These</p>
+          <SmallCardRow clients={strategicProspects} />
+          <Expander title="View all prospects" count={strategicProspects.length}>
+            <Table columns={actionColumns} data={strategicProspects} />
+          </Expander>
+        </>
       )}
 
       {/* Recent Wins */}
-      <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
+      <h2 className="text-4xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         🏆 Recent Wins
       </h2>
       <p className="text-base text-hdla-muted mb-4">Proposals awarded in the last 120 days.</p>
@@ -351,7 +379,7 @@ export default function MarketingPage() {
       )}
 
       {/* Recent Losses */}
-      <h2 className="text-3xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
+      <h2 className="text-4xl font-black text-hdla-text mb-1 flex items-center gap-2 mt-10">
         📉 Recent Losses
       </h2>
       <p className="text-base text-hdla-muted mb-4">Proposals not awarded in the last 120 days.</p>
@@ -365,7 +393,7 @@ export default function MarketingPage() {
       )}
 
       {/* Additional Analysis */}
-      <h2 className="text-3xl font-black text-hdla-text mb-4 mt-10">Additional Analysis</h2>
+      <h2 className="text-4xl font-black text-hdla-text mb-4 mt-10">Additional Analysis</h2>
       
       <div className="flex gap-1 border-b border-gray-200 mb-4">
         <TabButton active={analysisTab === 'partner'} onClick={() => setAnalysisTab('partner')}>

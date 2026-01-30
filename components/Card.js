@@ -10,7 +10,7 @@ export function MetricCard({ label, value, subvalue, trend, className = '' }) {
   return (
     <Card className={`py-4 ${className}`}>
       <div className="text-sm font-bold text-hdla-muted uppercase tracking-wide">{label}</div>
-      <div className="text-5xl font-black text-hdla-text leading-tight">{value}</div>
+      <div className="font-flecha text-5xl font-bold text-hdla-text leading-tight">{value}</div>
       {subvalue && (
         <div className="text-sm font-medium text-hdla-muted">{subvalue}</div>
       )}
