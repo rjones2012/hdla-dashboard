@@ -32,10 +32,31 @@ function Expander({ title, count, children, defaultOpen = false }) {
 }
 
 function ClientCard({ client }) {
+  const capsule = client.capsule;
+  
+  // Capsule activity status
+  let activityStatus = null;
+  if (capsule) {
+    if (capsule.openCount > 0) {
+      activityStatus = { color: 'text-green-600', bg: 'bg-green-50', label: `Scheduled: ${capsule.nextOpenName}` };
+    } else if (capsule.daysSinceTouch !== null && capsule.daysSinceTouch <= 30) {
+      activityStatus = { color: 'text-green-600', bg: 'bg-green-50', label: `Touched ${capsule.daysSinceTouch}d ago` };
+    } else if (capsule.daysSinceTouch !== null && capsule.daysSinceTouch <= 60) {
+      activityStatus = { color: 'text-amber-600', bg: 'bg-amber-50', label: `${capsule.daysSinceTouch}d since last touch` };
+    } else if (capsule.daysSinceTouch !== null) {
+      activityStatus = { color: 'text-red-600', bg: 'bg-red-50', label: `${capsule.daysSinceTouch}d since last touch` };
+    } else if (capsule.closedCount === 0) {
+      activityStatus = { color: 'text-gray-400', bg: 'bg-gray-50', label: 'No activity logged' };
+    }
+  }
+
   return (
     <div className="bg-white border-2 border-gray-400 rounded-lg p-5 min-w-[240px] shadow-md hover:shadow-lg transition-shadow">
       <div className="font-black text-xl text-hdla-text mb-1">{client.Client}</div>
-      <div className="text-sm font-medium text-hdla-muted mb-4">{client.Market} • {client.Partner || 'Unassigned'}</div>
+      <div className="text-sm font-medium text-hdla-muted mb-4">
+        {client.Market} • {client.Partner || 'Unassigned'}
+        {client.multiPartner && <span className="ml-1 text-xs text-amber-600" title={`Also: ${client.allPartners?.join(', ')}`}>⚑ multi-partner</span>}
+      </div>
       
       <div className="flex gap-6 text-sm mb-4">
         <span><span className="font-black">Active</span> {client.activeProjects}</span>
@@ -47,6 +68,12 @@ function ClientCard({ client }) {
         <div><span className="font-black">Relationship</span> {client.relationship}</div>
         <div><span className="font-black">Touchpoint</span> {client.touchpoint}</div>
       </div>
+
+      {activityStatus && (
+        <div className={`mt-3 px-3 py-2 rounded text-xs font-medium ${activityStatus.bg} ${activityStatus.color}`}>
+          {activityStatus.label}
+        </div>
+      )}
       
       {client.flags && client.flags.length > 0 && (
         <div className="mt-4 pt-3 border-t border-gray-200 text-sm">
@@ -161,11 +188,14 @@ export default function MarketingContent({ office = null }) {
   const criticalMarkets = ['Parks', 'Campus', 'Mixed-Use', 'Civic', 'State'];
   const byMarket = {};
   allClients.forEach(c => {
-    const m = c.Market || 'Unknown';
-    if (!byMarket[m]) byMarket[m] = { total: 0, active: 0, fee: 0 };
-    byMarket[m].total++;
-    if (c.activeProjects > 0) byMarket[m].active++;
-    byMarket[m].fee += c.activeFee || 0;
+    // Flattened clients have a markets array; fall back to Market string
+    const markets = c.markets || [c.Market || 'Unknown'];
+    markets.forEach(m => {
+      if (!byMarket[m]) byMarket[m] = { total: 0, active: 0, fee: 0 };
+      byMarket[m].total++;
+      if (c.activeProjects > 0) byMarket[m].active++;
+      byMarket[m].fee += c.activeFee || 0;
+    });
   });
 
   const marketTableData = Object.entries(byMarket)
@@ -184,6 +214,17 @@ export default function MarketingContent({ office = null }) {
     { header: 'Partner', key: 'Partner' },
     { header: 'Active Fee', key: 'activeFee', align: 'right', render: formatCurrency },
     { header: 'Traction', key: 'traction', align: 'right' },
+    { header: 'Last Touch', key: 'capsule', render: (capsule) => {
+      if (!capsule) return <span className="text-gray-300 text-xs">—</span>;
+      if (capsule.daysSinceTouch === null) return <span className="text-gray-300 text-xs">No data</span>;
+      const d = capsule.daysSinceTouch;
+      const color = d <= 30 ? 'text-green-600' : d <= 60 ? 'text-amber-600' : 'text-red-600';
+      return <span className={`text-xs font-medium ${color}`}>{d}d ago</span>;
+    }},
+    { header: 'Next', key: 'capsule', render: (capsule) => {
+      if (!capsule || !capsule.nextOpenName) return <span className="text-gray-300 text-xs">—</span>;
+      return <span className="text-xs text-green-600 font-medium">✓ {capsule.nextOpenName}</span>;
+    }},
     { header: 'Priority', key: 'priority', align: 'right', render: (v) => <span className="text-hdla-magenta font-semibold">{v}</span> },
     { header: 'Flags', key: 'flags', render: (flags) => (
       <div className="flex flex-wrap gap-1">

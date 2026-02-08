@@ -29,7 +29,7 @@ export async function GET(request) {
         result = computeCapacity(data);
         break;
       case 'marketing':
-        result = computeMarketing(data, office);
+        result = await computeMarketing(data, office);
         break;
       case 'trends':
         result = computeTrends(data);
@@ -40,7 +40,7 @@ export async function GET(request) {
           executive: computeExecutiveSummary(data),
           pipeline: computePipeline(data),
           capacity: computeCapacity(data),
-          marketing: computeMarketing(data),
+          marketing: await computeMarketing(data),
           trends: computeTrends(data),
         };
     }
